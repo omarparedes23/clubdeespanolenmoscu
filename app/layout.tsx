@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -22,7 +20,7 @@ export const metadata: Metadata = {
     template: '%s | Spanish Club Moscow',
   },
   description:
-    'Comunidad de intercambio cultural hispano-ruso en Moscú. Reuniones gratuitas los viernes en Casa Agave + fiestas especiales mensuales. • Культурный обмен между испаноязычными и русскими в Москве.',
+    'Comunidad de intercambio cultural latino-ruso en Moscú. Reuniones gratuitas los viernes en Casa Agave + fiestas especiales mensuales. • Культурный обмен между испаноязычными и русскими в Москве.',
   keywords: [
     'Spanish Club Moscow',
     'club español Moscú',
@@ -41,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'Spanish Club Moscow',
     title: 'Spanish Club Moscow — Donde el español y Rusia se encuentran',
     description:
-      'Reuniones gratuitas los viernes en Casa Agave + fiestas especiales. Únete a la comunidad hispano-rusa de Moscú.',
+      'Reuniones gratuitas los viernes en Casa Agave + fiestas especiales. Únete a la comunidad latino-rusa de Moscú.',
     images: [
       {
         url: '/og-image.jpg',
@@ -54,7 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Spanish Club Moscow',
-    description: 'Comunidad hispano-rusa en Moscú. ¡Únete!',
+    description: 'Comunidad latino-rusa en Moscú. ¡Únete!',
   },
   robots: {
     index: true,
@@ -80,10 +78,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`dark ${inter.variable} ${playfair.variable}`}>
-      <body className="bg-dark-bg text-white min-h-screen flex flex-col antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="bg-dark-bg text-white min-h-screen antialiased">
+        {children}
       </body>
     </html>
   )

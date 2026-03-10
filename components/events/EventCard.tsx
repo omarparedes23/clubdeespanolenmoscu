@@ -27,9 +27,8 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${
-        featured ? 'md:flex-row' : ''
-      }`}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${featured ? 'md:flex-row' : ''
+        }`}
       style={{
         background: 'linear-gradient(135deg, rgba(18,18,26,0.95) 0%, rgba(26,26,46,0.8) 100%)',
         borderColor: 'rgba(42,42,62,0.8)',
@@ -54,9 +53,9 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
       {/* Cover image */}
       <div className={`relative overflow-hidden ${featured ? 'md:w-72 md:flex-shrink-0' : ''}`}>
         <div className="relative h-44 w-full">
-          {event.cover_image_url ? (
+          {event.image_url ? (
             <Image
-              src={event.cover_image_url}
+              src={event.image_url}
               alt={event.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"

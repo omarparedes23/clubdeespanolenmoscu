@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     'Fotos de los eventos del Spanish Club Moscow. Revive los mejores momentos de nuestras reuniones y fiestas. • Фото с мероприятий клуба испанского языка в Москве.',
   openGraph: {
     title: 'Galería | Spanish Club Moscow',
-    description: 'Los mejores momentos de la comunidad hispano-rusa de Moscú.',
+    description: 'Los mejores momentos de la comunidad latino-rusa de Moscú.',
   },
 }
 

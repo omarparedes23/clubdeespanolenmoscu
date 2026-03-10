@@ -29,7 +29,7 @@ export async function getNextEvent(): Promise<Event | null> {
     .gte('date', new Date().toISOString())
     .order('date', { ascending: true })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error('Error fetching next event:', error)

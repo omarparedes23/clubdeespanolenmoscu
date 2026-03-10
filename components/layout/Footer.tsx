@@ -39,11 +39,11 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-2">
-              Comunidad de intercambio cultural hispano-ruso. Viernes en Casa Agave y fiestas
+              Comunidad de intercambio cultural latino-ruso. Viernes en Casa Agave y fiestas
               especiales en Moscú.
             </p>
             <p className="text-gray-600 text-xs leading-relaxed max-w-xs">
-              Испано-русское культурное сообщество Москвы.
+              Латино-русское культурное сообщество Москвы.
             </p>
             {/* Social links */}
             <div className="flex gap-3 mt-6">

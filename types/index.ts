@@ -10,7 +10,7 @@ export interface Event {
   type: EventType
   price: number
   telegram_bot_link: string | null
-  cover_image_url: string | null
+  image_url: string | null
   created_at: string
 }
 

@@ -43,11 +43,11 @@ export default function NextEvent({ event }: NextEventProps) {
       <div className="relative p-6 md:p-10">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Cover image */}
-          {event.cover_image_url && (
+          {event.image_url && (
             <div className="lg:w-72 lg:flex-shrink-0">
               <div className="relative h-48 lg:h-full min-h-[180px] rounded-2xl overflow-hidden">
                 <Image
-                  src={event.cover_image_url}
+                  src={event.image_url}
                   alt={event.title}
                   fill
                   className="object-cover"
@@ -63,11 +63,10 @@ export default function NextEvent({ event }: NextEventProps) {
             {/* Type badge + days left */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
               <span
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
-                  isFriday
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${isFriday
                     ? 'bg-green-500/15 text-green-400 border border-green-500/30'
                     : 'bg-brand-gold/15 text-brand-gold border border-brand-gold/30'
-                }`}
+                  }`}
               >
                 {isFriday ? '🎉 Viernes Gratis' : '⭐ Fiesta Especial'}
               </span>
