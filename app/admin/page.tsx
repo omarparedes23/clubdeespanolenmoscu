@@ -14,6 +14,7 @@ import {
   X,
   Loader2,
   ExternalLink,
+  Pencil,
 } from 'lucide-react'
 
 const BUCKET = 'clubdeespanol'
@@ -23,6 +24,15 @@ function getStoragePath(publicUrl: string): string {
   const marker = `/storage/v1/object/public/${BUCKET}/`
   const idx = publicUrl.indexOf(marker)
   return idx !== -1 ? decodeURIComponent(publicUrl.slice(idx + marker.length)) : ''
+}
+
+/** Converts an ISO date to the local format used by <input type="datetime-local"> */
+function toLocalInput(iso: string): string {
+  const d = new Date(iso)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(
+    d.getMinutes(),
+  )}`
 }
 
 const inputCls =
@@ -58,6 +68,7 @@ export default function AdminPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [submittingEvent, setSubmittingEvent] = useState(false)
   const [eventForm, setEventForm] = useState(EMPTY_EVENT_FORM)
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const coverFileRef = useRef<HTMLInputElement>(null)
 
   // Flash
@@ -166,7 +177,7 @@ export default function AdminPage() {
     showFlash(null)
 
     try {
-      let cover_image_url: string | null = null
+      let image_url: string | null = editingEvent?.image_url ?? null
       const coverFile = coverFileRef.current?.files?.[0]
 
       if (coverFile) {
@@ -175,10 +186,10 @@ export default function AdminPage() {
         const { error: uploadErr } = await supabase.storage.from(BUCKET).upload(path, coverFile)
         if (uploadErr) throw uploadErr
         const { data: { publicUrl } } = supabase.storage.from(BUCKET).getPublicUrl(path)
-        cover_image_url = publicUrl
+        image_url = publicUrl
       }
 
-      const { error: dbErr } = await supabase.from('events').insert({
+      const payload = {
         title: eventForm.title.trim(),
         description: eventForm.description.trim(),
         date: new Date(eventForm.date).toISOString(),
@@ -187,20 +198,55 @@ export default function AdminPage() {
         type: eventForm.type,
         price: parseFloat(eventForm.price) || 0,
         telegram_bot_link: eventForm.telegram_bot_link.trim() || null,
-        image_url: cover_image_url,
-      })
-      if (dbErr) throw dbErr
+        image_url,
+      }
 
-      showFlash({ type: 'success', text: 'Evento creado correctamente.' })
+      if (editingEvent) {
+        const { error: dbErr } = await supabase
+          .from('events')
+          .update(payload)
+          .eq('id', editingEvent.id)
+        if (dbErr) throw dbErr
+        showFlash({ type: 'success', text: 'Evento actualizado correctamente.' })
+        setEditingEvent(null)
+      } else {
+        const { error: dbErr } = await supabase.from('events').insert(payload)
+        if (dbErr) throw dbErr
+        showFlash({ type: 'success', text: 'Evento creado correctamente.' })
+      }
+
       setEventForm(EMPTY_EVENT_FORM)
       if (coverFileRef.current) coverFileRef.current.value = ''
       await fetchEvents()
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error al crear el evento.'
+      const msg = err instanceof Error ? err.message : 'Error al guardar el evento.'
       showFlash({ type: 'error', text: msg })
     } finally {
       setSubmittingEvent(false)
     }
+  }
+
+  // ── Events: edit ──────────────────────────────────────────────────────────
+  function handleEditEvent(event: Event) {
+    setEditingEvent(event)
+    setEventForm({
+      title: event.title,
+      description: event.description ?? '',
+      date: toLocalInput(event.date),
+      location_name: event.location_name ?? '',
+      location_url: event.location_url ?? '',
+      type: event.type,
+      price: String(event.price ?? 0),
+      telegram_bot_link: event.telegram_bot_link ?? '',
+    })
+    document.getElementById('event-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  // ── Events: cancel edit ───────────────────────────────────────────────────
+  function handleCancelEdit() {
+    setEditingEvent(null)
+    setEventForm(EMPTY_EVENT_FORM)
+    if (coverFileRef.current) coverFileRef.current.value = ''
   }
 
   // ── Events: delete ────────────────────────────────────────────────────────
@@ -409,11 +455,15 @@ export default function AdminPage() {
         {activeTab === 'events' && (
           <div className="space-y-8">
 
-            {/* Create event form */}
-            <div className="bg-[#12121A] border border-white/10 rounded-2xl p-6">
+            {/* Create/Edit event form */}
+            <div id="event-form" className="bg-[#12121A] border border-white/10 rounded-2xl p-6">
               <h2 className="font-semibold text-white mb-5 flex items-center gap-2">
-                <Plus size={16} className="text-[#E63946]" />
-                Crear nuevo evento
+                {editingEvent ? (
+                  <Pencil size={16} className="text-[#E63946]" />
+                ) : (
+                  <Plus size={16} className="text-[#E63946]" />
+                )}
+                {editingEvent ? 'Editar evento' : 'Crear nuevo evento'}
               </h2>
 
               <form onSubmit={handleEventSubmit} className="space-y-5">
@@ -539,8 +589,21 @@ export default function AdminPage() {
                   <div className="md:col-span-2">
                     <label className="block text-sm text-gray-400 mb-1.5">
                       Imagen de portada{' '}
-                      <span className="text-gray-600 text-xs">(opcional)</span>
+                      <span className="text-gray-600 text-xs">
+                        {editingEvent ? '(elige un archivo para reemplazarla)' : '(opcional)'}
+                      </span>
                     </label>
+                    {editingEvent?.image_url && (
+                      <div className="mb-3">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={editingEvent.image_url}
+                          alt="Portada actual"
+                          className="w-40 h-28 object-cover rounded-xl border border-white/10"
+                        />
+                        <p className="text-gray-600 text-xs mt-1">Portada actual</p>
+                      </div>
+                    )}
                     <input
                       ref={coverFileRef}
                       type="file"
@@ -553,7 +616,17 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-1">
+                <div className="flex justify-end gap-3 pt-1">
+                  {editingEvent && (
+                    <button
+                      type="button"
+                      onClick={handleCancelEdit}
+                      className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-white/20 text-sm font-medium transition-all"
+                    >
+                      <X size={15} />
+                      Cancelar
+                    </button>
+                  )}
                   <button
                     type="submit"
                     disabled={submittingEvent}
@@ -561,10 +634,12 @@ export default function AdminPage() {
                   >
                     {submittingEvent ? (
                       <Loader2 size={15} className="animate-spin" />
+                    ) : editingEvent ? (
+                      <Pencil size={15} />
                     ) : (
                       <Plus size={15} />
                     )}
-                    Crear evento
+                    {editingEvent ? 'Guardar cambios' : 'Crear evento'}
                   </button>
                 </div>
               </form>
@@ -626,13 +701,22 @@ export default function AdminPage() {
                         <p className="text-gray-500 text-xs truncate">{event.location_name}</p>
                       </div>
 
-                      <button
-                        onClick={() => handleDeleteEvent(event.id)}
-                        className="p-2 rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-all flex-shrink-0"
-                        title="Eliminar evento"
-                      >
-                        <Trash2 size={15} />
-                      </button>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button
+                          onClick={() => handleEditEvent(event)}
+                          className="p-2 rounded-lg text-gray-600 hover:text-brand-gold hover:bg-brand-gold/10 transition-all"
+                          title="Editar evento"
+                        >
+                          <Pencil size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteEvent(event.id)}
+                          className="p-2 rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                          title="Eliminar evento"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
