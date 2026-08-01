@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Calendar, Music } from 'lucide-react'
 
 const containerVariants = {
@@ -22,6 +23,18 @@ export default function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background layers */}
       <div className="absolute inset-0 bg-hero-gradient" />
+
+      {/* Background photo */}
+      <Image
+        src="/hero.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+      {/* Dark overlay for text readability */}
+      <div className="absolute inset-0 bg-dark-bg/70" />
 
       {/* Radial glow blobs */}
       <div
@@ -105,7 +118,7 @@ export default function Hero() {
         >
           Comunidad de intercambio cultural. Latinos y rusos reunidos para practicar español,
           compartir cultura y vivir Moscú.{' '}
-          <span className="text-white font-medium">Viernes gratis en Casa Agave.</span>
+          <span className="text-white font-medium">Viernes gratuitos de intercambio.</span>
         </motion.p>
 
         {/* CTAs */}
