@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Send, Instagram, Music2, MapPin, Clock } from 'lucide-react'
+import { Send, Instagram, Music2, MapPin, Clock, Phone, Mail } from 'lucide-react'
 
 const socialLinks = [
   {
@@ -19,7 +19,9 @@ const socialLinks = [
 const quickLinks = [
   { href: '/', label: 'Inicio · Главная' },
   { href: '/events', label: 'Eventos · События' },
+  { href: '/blog', label: 'Blog · Блог' },
   { href: '/gallery', label: 'Galería · Галерея' },
+  { href: '/contact', label: 'Contacto · Контакты' },
 ]
 
 export default function Footer() {
@@ -39,8 +41,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-2">
-              Comunidad de intercambio cultural latino-ruso. Viernes en Casa Agave y fiestas
-              especiales en Moscú.
+              Comunidad de intercambio cultural latino-ruso. Reuniones semanales gratuitas y
+              fiestas especiales en Moscú.
             </p>
             <p className="text-gray-600 text-xs leading-relaxed max-w-xs">
               Латино-русское культурное сообщество Москвы.
@@ -90,8 +92,8 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin size={15} className="text-brand-red mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-white text-sm font-medium">Casa Agave</p>
-                  <p className="text-gray-500 text-xs">Москва · Moscow</p>
+                  <p className="text-white text-sm font-medium">Casa Agave · Parque Gorki</p>
+                  <p className="text-gray-500 text-xs">Москва · Moscú</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -99,6 +101,30 @@ export default function Footer() {
                 <div>
                   <p className="text-white text-sm font-medium">Viernes · Пятница</p>
                   <p className="text-gray-500 text-xs">19:00 MSK · Gratis · Бесплатно</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Phone size={15} className="text-brand-red mt-0.5 flex-shrink-0" />
+                <div>
+                  <a
+                    href="tel:+79858496859"
+                    className="text-white text-sm font-medium hover:text-brand-red transition-colors"
+                  >
+                    +7 985 849-68-59
+                  </a>
+                  <p className="text-gray-500 text-xs">WhatsApp / Telegram</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Mail size={15} className="text-brand-gold mt-0.5 flex-shrink-0" />
+                <div>
+                  <a
+                    href="mailto:jastyn.rusia@vk.com"
+                    className="text-white text-sm font-medium hover:text-brand-red transition-colors"
+                  >
+                    jastyn.rusia@vk.com
+                  </a>
+                  <p className="text-gray-500 text-xs">Escribe con toda confianza</p>
                 </div>
               </div>
             </div>
@@ -110,9 +136,14 @@ export default function Footer() {
           <p className="text-gray-600 text-xs">
             © {new Date().getFullYear()} Spanish Club Moscow. Todos los derechos reservados.
           </p>
-          <p className="text-gray-700 text-xs">
-            Hecho con ❤️ en Moscú · Сделано с любовью в Москве
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/legal" className="text-gray-600 hover:text-white text-xs transition-colors">
+              Términos y privacidad · Условия
+            </Link>
+            <p className="text-gray-700 text-xs">
+              Hecho con ❤️ en Moscú · Сделано с любовью в Москве
+            </p>
+          </div>
         </div>
       </div>
     </footer>

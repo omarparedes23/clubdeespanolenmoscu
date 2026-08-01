@@ -28,6 +28,23 @@ export function buildOrganizationJsonLd() {
   }
 }
 
+export function buildFaqJsonLd(
+  items: { question: string; answer: string }[],
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
+}
+
 export function buildEventJsonLd(event: Event) {
   return {
     '@context': 'https://schema.org',

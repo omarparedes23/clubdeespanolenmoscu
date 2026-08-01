@@ -6,11 +6,38 @@ import { getNextEvent, getUpcomingEvents } from '@/lib/supabase'
 import EventCard from '@/components/events/EventCard'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { buildEventJsonLd, toJsonLd } from '@/lib/seo'
+import { buildEventJsonLd, buildFaqJsonLd, toJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Inicio',
 }
+
+const faqs = [
+  {
+    q: '¿Cuánto cuesta asistir a los eventos?',
+    a: 'Los viernes son gratuitos: solo tienes que registrarte en verano para recibir la ubicación exacta. Las fiestas especiales tienen precio y se paga vía Telegram.',
+  },
+  {
+    q: '¿Puedo ir solo o sola?',
+    a: 'Sí, por supuesto. Siempre hay gente abierta a conocer y conversar. Es un espacio pensado para hacer networking y nuevos amigos.',
+  },
+  {
+    q: '¿Dónde nos reunimos?',
+    a: 'En verano nos reunimos los viernes a las 19:00 en el Parque Gorki (metro Frunzenskaya), en la estatua del buzo. El resto del año, en Casa Agave.',
+  },
+  {
+    q: '¿Necesito registrarme?',
+    a: 'Para los eventos gratuitos de verano sí, porque a veces cambiamos la ubicación. Al registrarte recibes acceso a nuestros próximos eventos y experiencias exclusivas.',
+  },
+  {
+    q: '¿Se puede ir con mascota?',
+    a: 'Sí, somos #PetFriendly.',
+  },
+  {
+    q: '¿Qué idiomas se hablan?',
+    a: 'Español, ruso, spanglish y "ruñol". Todos son bienvenidos sin importar tu nivel.',
+  },
+]
 
 // Revalidate every 5 minutes
 export const revalidate = 300
@@ -32,6 +59,12 @@ export default async function HomePage() {
           dangerouslySetInnerHTML={{ __html: toJsonLd(buildEventJsonLd(event)) }}
         />
       ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: toJsonLd(buildFaqJsonLd(faqs.map((f) => ({ question: f.q, answer: f.a })))),
+        }}
+      />
       <LiveStatus />
       <Hero />
 
@@ -173,6 +206,72 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="section-title mb-4">
+              Preguntas <span className="gradient-text">Frecuentes</span>
+            </h2>
+            <p className="text-gray-400 text-lg text-balance">
+              Todo lo que necesitas saber antes de venir · Всё, что нужно знать перед приходом
+            </p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.q}
+                className="glass-card rounded-2xl px-6 py-5 group open:border-brand-red/30 transition-colors"
+              >
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none select-none">
+                  <span className="text-white font-semibold">{faq.q}</span>
+                  <span className="text-brand-red text-xl transition-transform duration-200 group-open:rotate-45 flex-shrink-0">
+                    +
+                  </span>
+                </summary>
+                <p className="text-gray-400 text-sm leading-relaxed mt-4">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Amigos del Club */}
+      <section className="py-16 px-4 bg-dark-surface">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="section-title mb-4">
+              Amigos del <span className="gradient-text">Club</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto text-balance">
+              Proyectos y servicios de nuestra comunidad. Viniendo de parte del club de español en
+              Moscú tienes descuento, primera clase gratis o consultoría.
+            </p>
+            <p className="text-gray-600 text-sm mt-2">
+              Проекты и услуги нашего сообщества: со словами "от клуба испанского языка" получите
+              скидку или бесплатный первый урок.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a
+              href="https://t.me/clubdeespanolenmoscu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-card rounded-2xl p-6 hover:border-brand-gold/40 transition-colors group"
+            >
+              <div className="w-11 h-11 rounded-xl bg-brand-gold/15 border border-brand-gold/30 flex items-center justify-center mb-4 group-hover:bg-brand-gold/25 transition-colors">
+                <span className="text-brand-gold font-bold text-lg">Д</span>
+              </div>
+              <p className="text-white font-semibold mb-1">Добби — найди новое хобби</p>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                Dobbi te ayuda a encontrar tu nuevo hobby. Beneficio para el club: primera consulta
+                gratis · Первая консультация бесплатно.
+              </p>
+            </a>
           </div>
         </div>
       </section>

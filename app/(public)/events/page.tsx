@@ -36,10 +36,10 @@ export default async function EventsPage() {
             <span className="gradient-text">Eventos</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto text-balance">
-            Viernes gratis en Casa Agave + Fiestas especiales en los mejores venues de Moscú.
+            Viernes gratuitos de intercambio cultural + Fiestas especiales en los mejores venues de Moscú.
           </p>
           <p className="text-gray-600 text-sm mt-2">
-            Бесплатные пятницы в Casa Agave + Особые вечеринки в лучших заведениях Москвы.
+            Бесплатные пятницы языкового обмена + Особые вечеринки в лучших заведениях Москвы.
           </p>
         </div>
       </div>
@@ -55,9 +55,9 @@ export default async function EventsPage() {
               </div>
               <div>
                 <h2 className="text-white font-bold text-xl">
-                  Viernes en Casa Agave
+                  Viernes de Español
                 </h2>
-                <p className="text-gray-500 text-sm">Пятницы в Casa Agave · Gratis · Бесплатно</p>
+                <p className="text-gray-500 text-sm">Пятницы испанского · Gratis · Бесплатно</p>
               </div>
             </div>
             <div className="flex-1 h-px bg-gradient-to-r from-brand-red/30 to-transparent" />

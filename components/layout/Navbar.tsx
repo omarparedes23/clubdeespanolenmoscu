@@ -10,6 +10,7 @@ import { getLiveStatus } from '@/lib/utils'
 const navLinks = [
   { href: '/', label: 'Inicio', labelRu: 'Главная' },
   { href: '/events', label: 'Eventos', labelRu: 'События' },
+  { href: '/blog', label: 'Blog', labelRu: 'Блог' },
   { href: '/gallery', label: 'Galería', labelRu: 'Галерея' },
 ]
 

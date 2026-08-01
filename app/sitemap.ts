@@ -1,10 +1,12 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/seo'
+import { posts } from '@/lib/blog'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/events', '/gallery']
+  const staticRoutes = ['', '/events', '/gallery', '/contact', '/legal', '/blog']
+  const blogRoutes = posts.map((post) => `/blog/${post.slug}`)
 
-  return routes.map((route) => ({
+  return [...staticRoutes, ...blogRoutes].map((route) => ({
     url: `${SITE_URL}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
