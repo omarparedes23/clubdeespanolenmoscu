@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react'
 import { buildEventJsonLd, toJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Inicio | Spanish Club Moscow',
+  title: 'Inicio',
 }
 
 // Revalidate every 5 minutes

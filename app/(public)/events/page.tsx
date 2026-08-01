@@ -4,7 +4,7 @@ import EventCard from '@/components/events/EventCard'
 import { Calendar, Star, Clock } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Eventos | Spanish Club Moscow',
+  title: 'Eventos',
   description:
     'Próximos eventos del Spanish Club Moscow. Reuniones gratuitas los viernes en Casa Agave y fiestas especiales en discotecas de Moscú. • Предстоящие мероприятия клуба испанского языка в Москве.',
   openGraph: {

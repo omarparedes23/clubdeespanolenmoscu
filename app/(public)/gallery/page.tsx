@@ -17,7 +17,7 @@ const DEMO_IMAGES: GalleryImage[] = [
 ]
 
 export const metadata: Metadata = {
-  title: 'Galería | Spanish Club Moscow',
+  title: 'Galería',
   description:
     'Fotos de los eventos del Spanish Club Moscow. Revive los mejores momentos de nuestras reuniones y fiestas. • Фото с мероприятий клуба испанского языка в Москве.',
   openGraph: {

@@ -8,3 +8,4 @@ build
 dist
 CLAUDE.md
 *.md
+!**/README.md
