@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
+import { SITE_URL, buildOrganizationJsonLd, toJsonLd } from '@/lib/seo'
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -15,6 +16,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Spanish Club Moscow | Club de Español en Moscú',
     template: '%s | Spanish Club Moscow',
@@ -32,6 +34,9 @@ export const metadata: Metadata = {
     'латиноамериканцы Москва',
   ],
   authors: [{ name: 'Spanish Club Moscow' }],
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_ES',
@@ -40,14 +45,6 @@ export const metadata: Metadata = {
     title: 'Spanish Club Moscow — Donde el español y Rusia se encuentran',
     description:
       'Reuniones gratuitas los viernes en Casa Agave + fiestas especiales. Únete a la comunidad latino-rusa de Moscú.',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Spanish Club Moscow',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -79,6 +76,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={`dark ${inter.variable} ${playfair.variable}`}>
       <body className="bg-dark-bg text-white min-h-screen antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: toJsonLd(buildOrganizationJsonLd()) }}
+        />
         {children}
       </body>
     </html>

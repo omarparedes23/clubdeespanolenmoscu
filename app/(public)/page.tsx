@@ -6,6 +6,7 @@ import { getNextEvent, getUpcomingEvents } from '@/lib/supabase'
 import EventCard from '@/components/events/EventCard'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { buildEventJsonLd, toJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Inicio | Spanish Club Moscow',
@@ -24,6 +25,13 @@ export default async function HomePage() {
 
   return (
     <>
+      {previewEvents.map((event) => (
+        <script
+          key={event.id}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: toJsonLd(buildEventJsonLd(event)) }}
+        />
+      ))}
       <LiveStatus />
       <Hero />
 
